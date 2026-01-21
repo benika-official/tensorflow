@@ -18,6 +18,7 @@ limitations under the License.
 
 #include <cstdint>
 #include <functional>
+#include <optional>
 #include <string>
 
 #include "absl/strings/string_view.h"
@@ -99,6 +100,9 @@ class SymbolicExpr {
 
   void GetUsedVariables(llvm::DenseSet<VariableID>& used_vars) const;
 
+  // Returns true if this expression depends on the given variable.
+  bool IsFunctionOfVariable(VariableID var_id) const;
+
   // Traverses the expression tree and calls the callback for each
   // subexpression in postorder.
   void Walk(const std::function<void(SymbolicExpr)>& callback) const;
@@ -156,9 +160,7 @@ H AbslHashValue(H h, const SymbolicExpr& expr) {
 // called before any SymbolicExprs are created.
 void RegisterSymbolicExprStorage(mlir::MLIRContext* mlir_context);
 
-// Free functions to create SymbolicExpr.
-SymbolicExpr ParseSymbolicExpr(absl::string_view expr_str,
-                               mlir::MLIRContext* mlir_context);
+// Helpers to create SymbolicExprs.
 SymbolicExpr CreateSymbolicConstant(int64_t value,
                                     mlir::MLIRContext* mlir_context);
 SymbolicExpr CreateSymbolicVariable(int64_t var_id,
