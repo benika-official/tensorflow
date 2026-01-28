@@ -206,6 +206,7 @@ tf_kernel_library(
     prefix = "decode_image_op",
     deps = IMAGE_DEPS + [
         "@com_google_absl//absl/strings",
+        "@tsl//tsl/profiler/lib:traceme",
         "@xla//xla/tsl/util:byte_swap_array",
     ],
 )
@@ -458,11 +459,16 @@ cc_library(
     linkopts = ["-ldl"],
     visibility = ["//visibility:public"],
     deps = [
+        "//tensorflow/core:framework",
+        "//tensorflow/core:framework_types_hdr",
         "//tensorflow/core:portable_gif_internal",
         "//tensorflow/core:portable_jpeg_internal",
         "//tensorflow/core:portable_tensorflow_lib_lite",
         "//tensorflow/core/framework:bounds_check",
         "//tensorflow/core/framework:op_requires",
+        "//tensorflow/core/framework:tensor",
+        "//tensorflow/core/framework:tensor_shape",
+        "//tensorflow/core/framework:tensor_types",
         "//tensorflow/core/framework:types_proto_cc",
         "//tensorflow/core/lib/core:status",
         "//tensorflow/core/lib/png:png_io",
@@ -470,6 +476,7 @@ cc_library(
         "//tensorflow/core/platform:byte_order",
         "//tensorflow/core/platform:errors",
         "@com_google_absl//absl/strings",
+        "@tsl//tsl/profiler/lib:traceme",
         "@xla//xla/tsl/util:byte_swap_array",
     ],
     alwayslink = 1,
